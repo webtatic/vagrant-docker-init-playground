@@ -32,16 +32,6 @@ This uses CentOS 7's systemd system.
 It is based on the work rhatdan did to get systemd working in docker:
 http://rhatdan.wordpress.com/2014/04/30/running-systemd-within-a-docker-container/
 
-As CentOS 7 isn't live yet, there is no centos:centos7 image in the Docker
-registry, however you can preload it into your docker instance (whether its the
-host on Linux, or the docker Virtualbox VM on other OS)
-
-    # steps for non-linux OS
-    $ vagrant up docker
-    $ vagrant ssh docker
-    # then import the QA centos7 docker image
-    $ docker import -t centos:centos7 http://buildlogs.centos.org/centos/7/docker/CentOS-7-20140625-x86_64-docker_01.img.tar.xz
-
     $ vagrant up centos7 --provider=docker
 
 ## fedora-20

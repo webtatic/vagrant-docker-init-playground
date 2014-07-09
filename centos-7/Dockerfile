@@ -1,7 +1,6 @@
 FROM centos:centos7
 MAINTAINER "Andy Thompson" <andy@webtatic.com>
 ENV container docker
-ADD buildlogs.repo /etc/yum.repos.d/buildlogs.repo
 
 RUN yum -y update; yum clean all
 
