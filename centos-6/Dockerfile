@@ -8,6 +8,10 @@ RUN yum -y update; yum clean all
 # Install initscripts, but turn off all services by default
 RUN yum -y install initscripts; yum clean all; rm /etc/rc.d/rc*.d/*
 
+# Disable ttys
+RUN mv /etc/init/serial.conf /etc/init/serial.conf.disabled; \
+mv /etc/init/tty.conf /etc/init/tty.conf.disabled; \
+mv /etc/init/start-ttys.conf /etc/init/start-ttys.conf.disabled
 
 # Set up and enable sshd server
 RUN yum -y install openssh-server; yum clean all; \
