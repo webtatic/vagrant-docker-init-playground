@@ -2,17 +2,23 @@ FROM centos:centos6
 MAINTAINER "Andy Thompson" <andy@webtatic.com>
 ENV container docker
 
+# Update all base packages to keep them fresh
 RUN yum -y update; yum clean all
 
+# Install initscripts, but turn off all services by default
 RUN yum -y install initscripts; yum clean all; rm /etc/rc.d/rc*.d/*
 
-RUN yum -y install openssh-server; yum clean all; chkconfig sshd on
 
-RUN echo "UseDNS no" >> /etc/ssh/sshd_config; \
+# Set up and enable sshd server
+RUN yum -y install openssh-server; yum clean all; \
+chkconfig sshd on; \
+echo "UseDNS no" >> /etc/ssh/sshd_config; \
 echo "GSSAPIAuthentication no" >> /etc/ssh/sshd_config
 
+# Set up tools used by standard in vagrant
 RUN yum -y downgrade libselinux libselinux-utils; yum -y install wget nfs-utils which sudo; yum clean all
 
+# Set up the vagrant user
 RUN echo "NETWORKING=yes" > /etc/sysconfig/network; \
 useradd vagrant; \
 echo vagrant:vagrant | chpasswd; \
@@ -25,4 +31,5 @@ chmod -R go-rwsx /home/vagrant/.ssh; \
 echo "%vagrant ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/vagrant; \
 sed -i "s/^.*requiretty/#Defaults requiretty/" /etc/sudoers
 
+# Set the init command to run at boot by default
 CMD ["/sbin/init"]
