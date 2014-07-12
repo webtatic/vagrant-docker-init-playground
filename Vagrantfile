@@ -28,7 +28,7 @@ Vagrant.configure("2") do |main_config|
     config.vm.hostname = "docker.dev"
     config.vm.box = 'fedora-20'
     config.vm.box_url = 'http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_fedora-20_chef-provisionerless.box'
-    config.vm.synced_folder ".", "/vagrant", :disabled => true
+    config.vm.synced_folder ".", "/vagrant"
 
     config.vm.provider :virtualbox do |vbox|
       vbox.name = "docker-fedora-20"
