@@ -17,9 +17,13 @@ def docker_vm(main_config, options=nil)
       docker.build_dir = "./#{options[:box]}"
       docker.has_ssh = true
       docker.remains_running = true
+
+      if options[:init] == :systemd
+        # These init systems need CAP_SYS_ADMIN
       docker.create_args = ['--privileged']
     end
   end
+end
 end
 
 Vagrant.configure("2") do |main_config|
@@ -47,13 +51,16 @@ SCRIPT
 
   docker_vm main_config,
     :name => 'centos6',
+    :init => :sysvinit,
     :box => 'centos-6'
 
   docker_vm main_config,
     :name => 'centos7',
+    :init => :systemd,
     :box => 'centos-7'
 
   docker_vm main_config,
     :name => 'fedora20',
+    :init => :systemd,
     :box => 'fedora-20'
 end
