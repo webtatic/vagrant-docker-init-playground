@@ -15,14 +15,22 @@ def docker_vm(main_config, options=nil)
     config.vm.provider :docker do |docker|
       docker.vagrant_vagrantfile = __FILE__
       docker.vagrant_machine = 'docker'
-      docker.build_dir = "./#{options[:build_dir]}"
+      if options[:image]
+        docker.image = options[:image]
+      else 
+        docker.build_dir = "./#{options[:build_dir]}"
+      end
       docker.has_ssh = true
       docker.remains_running = true
 
+      create_args = ['--name', options[:name]]
+
       if options[:init] == :systemd
         # These init systems need CAP_SYS_ADMIN
-        docker.create_args = ['--privileged']
+        create_args += ['--privileged']
       end
+
+      docker.create_args = create_args
     end
   end
 end
