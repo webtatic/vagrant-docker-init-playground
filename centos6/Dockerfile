@@ -2,8 +2,9 @@ FROM centos:centos6
 MAINTAINER "Andy Thompson" <andy@webtatic.com>
 ENV container docker
 
-# Update all base packages to keep them fresh
-RUN yum -y update; yum clean all
+# Update all base packages to keep them fresh, downgrading libselinux to remove
+# centosplus repository dependency
+RUN yum -y downgrade libselinux libselinux-utils; yum -y update; yum clean all
 
 # Install initscripts, but turn off all services by default
 RUN yum -y install initscripts; yum clean all; rm /etc/rc.d/rc*.d/*
@@ -20,7 +21,7 @@ echo "UseDNS no" >> /etc/ssh/sshd_config; \
 echo "GSSAPIAuthentication no" >> /etc/ssh/sshd_config
 
 # Set up tools used by standard in vagrant
-RUN yum -y downgrade libselinux libselinux-utils; yum -y install wget nfs-utils which sudo; yum clean all
+RUN yum -y install wget nfs-utils which sudo; yum clean all
 
 # Set up the vagrant user
 RUN echo "NETWORKING=yes" > /etc/sysconfig/network; \
