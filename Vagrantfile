@@ -25,10 +25,8 @@ def docker_vm(main_config, options=nil)
 
       create_args = ['--name', options[:name]]
 
-      if options[:init] == :systemd
-        # These init systems need CAP_SYS_ADMIN
-        create_args += ['--privileged']
-      end
+      # These init systems need CAP_SYS_ADMIN
+      create_args += ['--privileged']
 
       docker.create_args = create_args
     end
