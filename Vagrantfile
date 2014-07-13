@@ -20,6 +20,7 @@ def docker_vm(main_config, options=nil)
       else 
         docker.build_dir = "./#{options[:build_dir]}"
       end
+      docker.ports = options[:ports] if options[:ports]
       docker.has_ssh = true
       docker.remains_running = true
 
